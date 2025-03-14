@@ -13,8 +13,19 @@ public class SpawanManager : MonoBehaviour
     private float spawnPosZ = 20.0f;
     private float startDelay = 2.0f;
     private float spawnInterval = 1.5f;
+
+    private void OnEnable() // 구독
+    {
+        DestroyOutOfBounds.OnGameOver += DisplayGameOver;
+    }
+
+    private void OnDisable() // 구독취소
+    {
+        DestroyOutOfBounds.OnGameOver -= DisplayGameOver;
+    }
     void Start()
     {
+        //DestroyOutOfBounds.OnGameOver.AddListener(DisplayGameOver);
         panelGameOver.SetActive(false);
         InvokeRepeating("SpawnRandomAnimal", startDelay, spawnInterval);
     }
@@ -36,6 +47,7 @@ public class SpawanManager : MonoBehaviour
 
     public void DisplayGameOver()
     {
-        panelGameOver.SetActive(false);
+        panelGameOver.SetActive(true);
+        CancelInvoke("SpawnRandomAnimal");
     }
 }
